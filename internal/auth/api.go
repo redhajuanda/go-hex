@@ -30,7 +30,7 @@ type handler struct {
 // @Accept json
 // @Produce json
 // @Param payload body RequestLogin false " "
-// @Success 200 {object} response.Response{data=LoginResponse} "Success"
+// @Success 200 {object} response.Response{data=ResponseLogin} "Success"
 // @failure 400 {object} response.ErrorResponse400
 // @failure 500 {object} response.ErrorResponse500
 func (h handler) login(c echo.Context) error {
@@ -63,8 +63,8 @@ func (h handler) login(c echo.Context) error {
 // @Description Refresh access token
 // @Accept json
 // @Produce json
-// @Param payload body RefreshTokenRequest false " "
-// @Success 200 {object} response.Response{data=LoginResponse} "Refresh token success"
+// @Param payload body RequestRefreshToken false " "
+// @Success 200 {object} response.Response{data=ResponseLogin} "Refresh token success"
 // @failure 400 {object} response.ErrorResponse400
 // @failure 403 {object} response.ErrorResponse403
 // @failure 500 {object} response.ErrorResponse500
