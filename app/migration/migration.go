@@ -28,7 +28,7 @@ func New() *Migration {
 	cfg := configs.LoadDefault()
 	log := logger.New(cfg.Server.NAME, app.Version)
 	logger.SetFormatter(&logrus.JSONFormatter{})
-	db, err := db.NewBunMariaDBConn(cfg.Database.Host, cfg.Database.Port, cfg.Database.Username, cfg.Database.Password, cfg.Database.DBName)
+	db, err := db.NewBunMySQLConn(cfg.Server.ENV, cfg.Database.Host, cfg.Database.Port, cfg.Database.Username, cfg.Database.Password, cfg.Database.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -52,14 +52,14 @@ func (m *Migration) Start(migrationType string) {
 		if err != nil {
 			panic(err)
 		}
-		m.db, err = db.NewBunMariaDBConn(m.cfg.Database.Host, m.cfg.Database.Port, m.cfg.Database.Username, m.cfg.Database.Password, m.cfg.Database.DBName)
+		m.db, err = db.NewBunMySQLConn(m.cfg.Server.ENV, m.cfg.Database.Host, m.cfg.Database.Port, m.cfg.Database.Username, m.cfg.Database.Password, m.cfg.Database.DBName)
 		if err != nil {
 			panic(err)
 		}
 	}
 
 	migrations := &migrate.FileMigrationSource{
-		Dir: "./scripts/migrations/mariadb",
+		Dir: "./scripts/migrations/mysql",
 	}
 
 	var direction migrate.MigrationDirection

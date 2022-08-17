@@ -7,7 +7,7 @@ import (
 	"go-hex/configs"
 	"go-hex/docs"
 	"go-hex/internal/auth"
-	"go-hex/internal/repository/mariadb"
+	"go-hex/internal/repository/mysql"
 	"go-hex/internal/user"
 	"go-hex/pkg/db"
 	"go-hex/pkg/logger"
@@ -47,7 +47,7 @@ func New() *API {
 	log := logger.New(cfg.Server.NAME, app.Version)
 	logger.SetFormatter(&logrus.JSONFormatter{})
 
-	db, err := db.NewBunMariaDBConn(cfg.Database.Host, cfg.Database.Port, cfg.Database.Username, cfg.Database.Password, cfg.Database.DBName)
+	db, err := db.NewBunMySQLConn(cfg.Server.ENV, cfg.Database.Host, cfg.Database.Port, cfg.Database.Username, cfg.Database.Password, cfg.Database.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -74,7 +74,7 @@ func (api API) BuildHandler() *echo.Echo {
 		api.log.Fatal(err)
 	}
 
-	repoRegistry := mariadb.NewRepositoryRegistry(api.db)
+	repoRegistry := mysql.NewRepositoryRegistry(api.db)
 
 	auth.RegisterAPI(
 		*api.router.Group(""),

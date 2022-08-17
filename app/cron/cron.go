@@ -32,7 +32,7 @@ func New() *Cron {
 	cfg := configs.LoadDefault()
 	log := logger.New(cfg.Server.NAME, app.Version)
 	logger.SetFormatter(&logrus.JSONFormatter{})
-	db, err := db.NewBunMariaDBConn("", "", "", "", "")
+	db, err := db.NewBunMySQLConn(cfg.Server.ENV, "", "", "", "", "")
 	if err != nil {
 		panic(err)
 	}

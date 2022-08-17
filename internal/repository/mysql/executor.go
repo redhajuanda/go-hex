@@ -1,4 +1,4 @@
-package mariadb
+package mysql
 
 import "github.com/uptrace/bun"
 

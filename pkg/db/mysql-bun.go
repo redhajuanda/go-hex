@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"go-hex/configs"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pkg/errors"
@@ -11,8 +12,7 @@ import (
 	"github.com/uptrace/bun/extra/bundebug"
 )
 
-func NewBunMariaDBConn(host string, port string, user, password, dbName string) (*bun.DB, error) {
-	// 	ctx := context.Background()
+func NewBunMySQLConn(env configs.Env, host string, port string, user, password, dbName string) (*bun.DB, error) {
 
 	connection := fmt.Sprintf("%s:%s@(%s:%s)/%s?parseTime=true&multiStatements=true", user, password, host, port, dbName)
 	sqldb, err := sql.Open("mysql", connection)
@@ -23,16 +23,10 @@ func NewBunMariaDBConn(host string, port string, user, password, dbName string) 
 	// Create a Bun db on top of it.
 	db := bun.NewDB(sqldb, mysqldialect.New())
 
-	// Print all queries to stdout.
-	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
+	if env.IsLocal() {
+		// Print all queries to stdout.
+		db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
+	}
 
-	// var rnd float64
-
-	// // Select a random number.
-	// if err := db.NewSelect().ColumnExpr("rand()").Scan(ctx, &rnd); err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Println(rnd)
 	return db, nil
 }

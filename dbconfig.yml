@@ -1,5 +1,5 @@
 development:
   dialect: mysql
   datasource: host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME} user=${DB_USERNAME} password=${DB_PASSWORD} sslmode=disable
-  dir: scripts/migrations/mariadb
+  dir: scripts/migrations/mysql
   table: gorp_migrations
